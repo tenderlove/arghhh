@@ -105,7 +105,7 @@ I've tried changing the cipher list to [be like the one in nghttp2](https://gith
 
 I've tried [setting the same options](https://github.com/tatsuhiro-t/nghttp2/blob/d10228cdf7c95198a9dc0c2d0781fc3eb8af2f88/src/HttpServer.cc#L1776-L1784).
 
-It looks like the server in the nghttp2 repo [uses ALPN](https://github.com/tatsuhiro-t/nghttp2/blob/d10228cdf7c95198a9dc0c2d0781fc3eb8af2f88/src/HttpServer.cc#L710-L727).  OpenSSL in Ruby doesn't support that, so I added it and changed the server to have ALPN support and that didn't work.  [Here is the patch I wrote to add ALPN support](https://gist.github.com/tenderlove/b19bdea0d98fd1c0b655) (which I will get upstreamed if I can prove that it is what we need).
+It looks like the server in the nghttp2 repo [uses ALPN](https://github.com/tatsuhiro-t/nghttp2/blob/d10228cdf7c95198a9dc0c2d0781fc3eb8af2f88/src/HttpServer.cc#L710-L727).  OpenSSL in Ruby doesn't support that, so I added it and changed the server to have ALPN support and that didn't work.  [Here is the patch I wrote to add ALPN support](https://gist.github.com/tenderlove/b19bdea0d98fd1c0b655) (which I will get upstreamed if I can prove that it is what we need).  NOTE: The [other example server in the nghttp2 repo *does not* use ALPN](https://github.com/tatsuhiro-t/nghttp2/blob/d10228cdf7c95198a9dc0c2d0781fc3eb8af2f88/examples/libevent-server.c) and it seems to work with Chrome and FireFox just fine.
 
 ## Things I haven't tried
 
