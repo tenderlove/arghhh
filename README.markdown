@@ -114,3 +114,8 @@ I couldn't figure out how to use WireShark, so I was relying on `ssldump`.  Beyo
 # THE END
 
 THANKS FOR READING THIS AND YOUR HELP!!
+
+## PS
+
+For those of you still reading, the *really* weird thing is that Chrome seems to
+retry the request, and if you are running [this script inside of Puma](https://gist.github.com/tenderlove/6eccbaf4ee89838b7944) it will actually succeed on the second request!
