@@ -53,7 +53,7 @@ Then in a different terminal I run `ssldump` like this:
 $ sudo ssldump -a -d -A -H  -i lo0
 ```
 
-Then I see an exchange like this:
+When I access the server with Chrome, I see an exchange like this:
 
 ```
 6 4  0.0013 (0.0000)  S>CV3.3(333)  Handshake
