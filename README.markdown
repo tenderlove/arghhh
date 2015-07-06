@@ -17,6 +17,8 @@ $ brew install nghttp2
 Then do this:
 
 ```
+$ git clone https://github.com/tenderlove/arghhh.git
+$ cd arghhh
 $ bundle install
 $ bundler exec ruby server.rb public.pem private.pem
 ```
