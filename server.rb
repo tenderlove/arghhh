@@ -2,7 +2,7 @@ require 'ds9'
 require 'socket'
 require 'openssl'
 
-raise "wrong version of nghttp2" unless DS9.nghttp_version == '1.0.5'
+warn "Using nghttp: #{DS9.nghttp_version}" # I tried with 1.0.2
 
 module DS9
   class Context
