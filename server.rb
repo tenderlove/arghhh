@@ -111,9 +111,13 @@ module DS9
         sock.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
         puts "OMG"
 
-        session = MySession.new sock
-        session.submit_settings SETTINGS
-        session.run
+        begin
+          session = MySession.new sock
+          session.submit_settings SETTINGS
+          session.run
+        rescue Exception => e
+          puts e
+        end
       end
     end
   end
