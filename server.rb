@@ -15,7 +15,7 @@ module DS9
     def initialize pubkey, privkey
       @pkey = OpenSSL::PKey::EC.new "prime256v1"
       @ctx               = OpenSSL::SSL::SSLContext.new
-      @ctx.alpn_select_cb = lambda { |things| DS9::PROTO_VERSION_ID }
+      @ctx.npn_protocols = [DS9::PROTO_VERSION_ID]
       @ctx.tmp_ecdh = @pkey
       @ctx.ssl_version   = "SSLv23_server"
       @ctx.cert          = CERT
