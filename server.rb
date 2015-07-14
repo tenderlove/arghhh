@@ -2,18 +2,21 @@ require 'ds9'
 require 'socket'
 require 'openssl'
 
+CERT = OpenSSL::X509::Certificate.new File.read ARGV[0]
+KEY = OpenSSL::PKey::RSA.new File.read ARGV[1]
+
 warn "Using nghttp: #{DS9.nghttp_version}" # I tried with 1.0.2
+warn "OpenSSL: #{OpenSSL::OPENSSL_VERSION}"
 
 module DS9
   class Context
-    SETTINGS = [ ]
+    SETTINGS = [ [DS9::Settings::MAX_CONCURRENT_STREAMS, 100] ]
 
     def initialize pubkey, privkey
       @ctx               = OpenSSL::SSL::SSLContext.new
       @ctx.ssl_version   = "SSLv23_server"
-      @ctx.cert          = OpenSSL::X509::Certificate.new File.read ARGV[0]
-      @ctx.key           = OpenSSL::PKey::RSA.new File.read ARGV[1]
-      @ctx.npn_protocols = [DS9::NGHTTP2_PROTO_VERSION_ID]
+      @ctx.cert          = CERT
+      @ctx.key           = KEY
       server             = TCPServer.new 8080
       @server            = OpenSSL::SSL::SSLServer.new server, @ctx
       @server.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
@@ -94,6 +97,11 @@ module DS9
         while want_read? || want_write?
           if want_read?
             rd, _, _ = IO.select([@sock])
+            begin
+              return if rd.first.eof?
+            rescue OpenSSL::SSL::SSLError
+              return
+            end
             receive
           end
 
@@ -108,7 +116,6 @@ module DS9
     def run
       loop do
         sock = @server.accept
-        sock.setsockopt Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1
         puts "OMG"
 
         session = MySession.new sock
