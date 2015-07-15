@@ -123,9 +123,13 @@ module DS9
         sock = @server.accept
         puts "OMG"
 
-        session = MySession.new sock
-        session.submit_settings SETTINGS
-        session.run
+        begin
+          session = MySession.new sock
+          session.submit_settings SETTINGS
+          session.run
+        rescue Exception => e
+          puts e
+        end
       end
     end
   end
